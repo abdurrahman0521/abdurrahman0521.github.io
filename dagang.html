@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LezatRest - Restoran Lesehan Bintang 5</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #1f2937, #111827);
+        color: #f9fafb;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      /* Navbar */
+      nav {
+        background: #111827cc;
+        backdrop-filter: saturate(180%) blur(10px);
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+      nav .logo {
+        font-weight: 900;
+        font-size: 1.5rem;
+        color: #60a5fa;
+        user-select: none;
+      }
+      nav .tabs button {
+        background: transparent;
+        border: none;
+        color: #cbd5e1;
+        font-weight: 600;
+        font-size: 1rem;
+        margin-left: 1.25rem;
+        cursor: pointer;
+        padding: 0.25rem 0.5rem;
+        border-bottom: 3px solid transparent;
+        transition: border-color 0.3s ease, color 0.3s ease;
+      }
+      nav .tabs button.active {
+        border-color: #60a5fa;
+        color: #60a5fa;
+      }
+      nav .tabs button:hover:not(.active) {
+        color: #93c5fd;
+      }
+      nav .logout-btn {
+        background: #ef4444;
+        border: none;
+        color: white;
+        padding: 0.4rem 0.9rem;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 700;
+        transition: background-color 0.3s ease;
+      }
+      nav .logout-btn:hover {
+        background: #dc2626;
+      }
+
+      /* Login form */
+      #loginPage {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #0f172a, #1e293b);
+      }
+      #loginForm {
+        background: #1e293b;
+        padding: 2rem 2.5rem;
+        border-radius: 12px;
+        box-shadow: 0 0 15px #2563ebaa;
+        width: 320px;
+      }
+      #loginForm h2 {
+        margin-bottom: 1.5rem;
+        text-align: center;
+        color: #60a5fa;
+      }
+      #loginForm label {
+        display: block;
+        margin-top: 1rem;
+        font-weight: 600;
+      }
+      #loginForm input {
+        width: 100%;
+        padding: 0.5rem;
+        margin-top: 0.3rem;
+        border-radius: 6px;
+        border: none;
+        outline: none;
+        font-size: 1rem;
+      }
+      #loginForm button {
+        margin-top: 1.5rem;
+        width: 100%;
+        background: #3b82f6;
+        color: white;
+        font-weight: 700;
+        padding: 0.6rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      #loginForm button:hover {
+        background: #2563eb;
+      }
+
+      /* Main content wrapper */
+      #mainContent {
+        flex: 1;
+        display: none;
+        flex-direction: column;
+        padding: 1rem 2rem 3rem;
+      }
+
+      /* Menu grids */
+      .menu-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 1rem 1rem;
+        margin-top: 1rem;
+      }
+      .menu-card {
+        background: #1e293b;
+        border-radius: 12px;
+        box-shadow: 0 0 10px #2563eb55;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.2s ease;
+      }
+      .menu-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0 20px #3b82f6aa;
+      }
+      .menu-card img {
+        width: 100%;
+        height: 140px;
+        object-fit: cover;
+      }
+      .menu-info {
+        padding: 0.75rem 1rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .menu-info h3 {
+        margin: 0 0 0.3rem 0;
+        font-size: 1.1rem;
+      }
+      .menu-info p.desc {
+        font-size: 0.85rem;
+        color: #94a3b8;
+        flex-grow: 1;
+      }
+      .menu-info p.price {
+        font-weight: 700;
+        color: #fbbf24;
+        margin: 0.4rem 0;
+      }
+      .menu-info button {
+        background: #3b82f6;
+        border: none;
+        padding: 0.4rem 0;
+        border-radius: 8px;
+        color: white;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      .menu-info button:hover {
+        background: #2563eb;
+      }
+
+      /* Sections */
+      section {
+        margin-top: 1rem;
+      }
+      #cartSection {
+        background: #1e293b;
+        padding: 1rem;
+        border-radius: 12px;
+        max-width: 600px;
+      }
+      #cartSection ul {
+        list-style: none;
+        padding-left: 0;
+        max-height: 300px;
+        overflow-y: auto;
+        margin-bottom: 1rem;
+      }
+      #cartSection ul li {
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #374151;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      #cartSection ul li button {
+        background: #ef4444;
+        border: none;
+        color: white;
+        font-weight: 700;
+        border-radius: 6px;
+        padding: 0 0.6rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      #cartSection ul li button:hover {
+        background: #dc2626;
+      }
+      #cartTotal {
+        font-weight: 700;
+        font-size: 1.2rem;
+        text-align: right;
+        color: #fbbf24;
+      }
+      #paymentMethod {
+        width: 100%;
+        padding: 0.5rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        border: none;
+        font-size: 1rem;
+      }
+      #checkoutBtn {
+        width: 100%;
+        padding: 0.6rem;
+        background: #10b981;
+        border: none;
+        color: white;
+        font-weight: 700;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      #checkoutBtn:hover {
+        background: #059669;
+      }
+
+      /* Invoice */
+      #invoice {
+        white-space: pre-wrap;
+        background: #111827dd;
+        padding: 1.5rem;
+        border-radius: 12px;
+        font-family: monospace;
+        margin-top: 1rem;
+        max-width: 600px;
+      }
+
+      /* Responsive */
+      @media (max-width: 1200px) {
+        .menu-grid {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+      @media (max-width: 900px) {
+        .menu-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        nav .tabs button {
+          font-size: 0.9rem;
+          margin-left: 0.75rem;
+        }
+      }
+      @media (max-width: 600px) {
+        .menu-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        #mainContent {
+          padding: 1rem;
+        }
+      }
+      @media (max-width: 400px) {
+        .menu-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- LOGIN PAGE -->
+    <div id="loginPage">
+      <form id="loginForm">
+        <h2>Login LezatRest</h2>
+        <label for="username">Username</label>
+        <input type="text" id="username" autocomplete="off" required />
+        <label for="password">Password</label>
+        <input type="password" id="password" autocomplete="off" required />
+        <button type="submit">Masuk</button>
+      </form>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="mainContent">
+      <nav>
+        <div class="logo">LezatRest</div>
+        <div class="tabs">
+          <button id="tabFood" class="active">Makanan</button>
+          <button id="tabDrink">Minuman</button>
+          <button id="tabCart">
+            Keranjang (<span id="cartCount">0</span>)
+          </button>
+        </div>
+        <button class="logout-btn" id="logoutBtn">Logout</button>
+      </nav>
+
+      <!-- Makanan -->
+      <section id="foodCategory">
+        <h2>Makanan</h2>
+        <div class="menu-grid" id="foodGrid"></div>
+      </section>
+
+      <!-- Minuman -->
+      <section id="drinkCategory" style="display: none">
+        <h2>Minuman</h2>
+        <div class="menu-grid" id="drinkGrid"></div>
+      </section>
+
+      <!-- Keranjang -->
+      <section id="cartSection" style="display: none">
+        <h2>Keranjang Belanja</h2>
+        <ul id="cartList"></ul>
+        <div id="cartTotal">Total: Rp0</div>
+        <select id="paymentMethod">
+          <option value="" disabled selected>Pilih Metode Pembayaran</option>
+          <option value="cash">Tunai (Cash)</option>
+          <option value="debit">Debit / Kartu Kredit</option>
+          <option value="e-wallet">E-Wallet (OVO, GoPay, dll)</option>
+        </select>
+        <button id="checkoutBtn">Checkout</button>
+        <pre id="invoice" style="display: none"></pre>
+      </section>
+    </div>
+
+    <script>
+      // Data pengguna
+      const validUsers = {
+        admin: "password123",
+        user: "lesehan",
+        pelanggan: "lezatrest",
+      };
+
+      // Data menu makanan 25 item (5x5)
+      const foodItems = [
+        {
+          name: "Nasi Goreng Spesial",
+          price: 25000,
+          desc: "Nasi goreng dengan telur dan ayam.",
+          img: "https://source.unsplash.com/400x300/?fried-rice",
+        },
+        {
+          name: "Sate Ayam",
+          price: 20000,
+          desc: "Sate ayam dengan bumbu kacang.",
+          img: "https://source.unsplash.com/400x300/?satay",
+        },
+        {
+          name: "Gado-Gado",
+          price: 22000,
+          desc: "Sayuran segar dengan bumbu kacang.",
+          img: "https://source.unsplash.com/400x300/?gado-gado",
+        },
+        {
+          name: "Rendang Daging",
+          price: 35000,
+          desc: "Daging sapi rendang khas Padang.",
+          img: "https://source.unsplash.com/400x300/?rendang",
+        },
+        {
+          name: "Ayam Goreng",
+          price: 28000,
+          desc: "Ayam goreng renyah dan gurih.",
+          img: "https://source.unsplash.com/400x300/?fried-chicken",
+        },
+        {
+          name: "Bakso Sapi",
+          price: 23000,
+          desc: "Bakso sapi dengan kuah kaldu.",
+          img: "https://source.unsplash.com/400x300/?meatball",
+        },
+        {
+          name: "Mie Goreng Jawa",
+          price: 24000,
+          desc: "Mie goreng khas Jawa dengan sayuran.",
+          img: "https://source.unsplash.com/400x300/?fried-noodles",
+        },
+        {
+          name: "Sop Buntut",
+          price: 40000,
+          desc: "Sop buntut sapi dengan rempah.",
+          img: "https://source.unsplash.com/400x300/?oxtail-soup",
+        },
+        {
+          name: "Nasi Uduk",
+          price: 22000,
+          desc: "Nasi uduk dengan lauk pelengkap.",
+          img: "https://source.unsplash.com/400x300/?nasi-uduk",
+        },
+        {
+          name: "Ikan Bakar",
+          price: 30000,
+          desc: "Ikan bakar dengan sambal.",
+          img: "https://source.unsplash.com/400x300/?grilled-fish",
+        },
+        {
+          name: "Lontong Sayur",
+          price: 18000,
+          desc: "Lontong dengan sayur dan kuah santan.",
+          img: "https://source.unsplash.com/400x300/?lontong",
+        },
+        {
+          name: "Tahu Gejrot",
+          price: 15000,
+          desc: "Tahu goreng dengan kuah pedas.",
+          img: "https://source.unsplash.com/400x300/?tofu",
+        },
+        {
+          name: "Pecel Lele",
+          price: 27000,
+          desc: "Lele goreng dengan sambal terasi.",
+          img: "https://source.unsplash.com/400x300/?catfish",
+        },
+        {
+          name: "Soto Ayam",
+          price: 23000,
+          desc: "Soto ayam dengan bumbu kuning.",
+          img: "https://source.unsplash.com/400x300/?chicken-soup",
+        },
+        {
+          name: "Martabak Telur",
+          price: 25000,
+          desc: "Martabak isi telur dan daging.",
+          img: "https://source.unsplash.com/400x300/?martabak",
+        },
+        {
+          name: "Nasi Padang",
+          price: 35000,
+          desc: "Nasi dengan berbagai lauk Padang.",
+          img: "https://source.unsplash.com/400x300/?padang-food",
+        },
+        {
+          name: "Pempek Palembang",
+          price: 20000,
+          desc: "Pempek dengan kuah cuka.",
+          img: "https://source.unsplash.com/400x300/?pempek",
+        },
+        {
+          name: "Ayam Betutu",
+          price: 32000,
+          desc: "Ayam betutu khas Bali.",
+          img: "https://source.unsplash.com/400x300/?balinese-chicken",
+        },
+        {
+          name: "Kerak Telor",
+          price: 15000,
+          desc: "Makanan khas Betawi.",
+          img: "https://source.unsplash.com/400x300/?kerak-telor",
+        },
+        {
+          name: "Nasi Campur Bali",
+          price: 30000,
+          desc: "Nasi campur dengan lauk Bali.",
+          img: "https://source.unsplash.com/400x300/?balinese-food",
+        },
+        {
+          name: "Sate Padang",
+          price: 28000,
+          desc: "Sate dengan bumbu khas Padang.",
+          img: "https://source.unsplash.com/400x300/?padang-satay",
+        },
+        {
+          name: "Bakmi Ayam",
+          price: 22000,
+          desc: "Mie ayam dengan kuah kaldu.",
+          img: "https://source.unsplash.com/400x300/?chicken-noodles",
+        },
+        {
+          name: "Rujak Buah",
+          price: 18000,
+          desc: "Salad buah dengan bumbu rujak.",
+          img: "https://source.unsplash.com/400x300/?fruit-salad",
+        },
+        {
+          name: "Tahu Tek",
+          price: 15000,
+          desc: "Tahu goreng dengan bumbu petis.",
+          img: "https://source.unsplash.com/400x300/?tofu-indonesia",
+        },
+        {
+          name: "Es Campur",
+          price: 20000,
+          desc: "Minuman dingin dengan buah dan es.",
+          img: "https://source.unsplash.com/400x300/?indonesian-dessert",
+        },
+      ];
+
+      // Menu minuman
+      const drinkItems = [
+        {
+          name: "Es Teh Manis",
+          price: 8000,
+          desc: "Teh dingin manis segar.",
+          img: "https://source.unsplash.com/400x300/?iced-tea",
+        },
+        {
+          name: "Es Jeruk",
+          price: 10000,
+          desc: "Jeruk segar dengan es.",
+          img: "https://source.unsplash.com/400x300/?orange-juice",
+        },
+        {
+          name: "Kopi Tubruk",
+          price: 12000,
+          desc: "Kopi hitam tradisional.",
+          img: "https://source.unsplash.com/400x300/?coffee",
+        },
+        {
+          name: "Jus Alpukat",
+          price: 15000,
+          desc: "Jus alpukat kental dan manis.",
+          img: "https://source.unsplash.com/400x300/?avocado-juice",
+        },
+        {
+          name: "Es Cendol",
+          price: 13000,
+          desc: "Minuman cendol khas Indonesia.",
+          img: "https://source.unsplash.com/400x300/?cendol",
+        },
+      ];
+
+      // DOM references
+      const loginPage = document.getElementById("loginPage");
+      const mainContent = document.getElementById("mainContent");
+      const loginForm = document.getElementById("loginForm");
+      const usernameInput = document.getElementById("username");
+      const passwordInput = document.getElementById("password");
+
+      const tabFood = document.getElementById("tabFood");
+      const tabDrink = document.getElementById("tabDrink");
+      const tabCart = document.getElementById("tabCart");
+      const logoutBtn = document.getElementById("logoutBtn");
+
+      const foodGrid = document.getElementById("foodGrid");
+      const drinkGrid = document.getElementById("drinkGrid");
+
+      const foodCategory = document.getElementById("foodCategory");
+      const drinkCategory = document.getElementById("drinkCategory");
+      const cartSection = document.getElementById("cartSection");
+
+      const cartCount = document.getElementById("cartCount");
+      const cartList = document.getElementById("cartList");
+      const cartTotal = document.getElementById("cartTotal");
+      const paymentMethod = document.getElementById("paymentMethod");
+      const checkoutBtn = document.getElementById("checkoutBtn");
+      const invoice = document.getElementById("invoice");
+
+      let cart = [];
+
+      // Fungsi cek login
+      function checkLogin() {
+        const loggedInUser = sessionStorage.getItem("loggedInUser");
+        if (loggedInUser) {
+          loginPage.style.display = "none";
+          mainContent.style.display = "flex";
+          renderMenu();
+          updateCartUI();
+          showSection("food");
+        } else {
+          loginPage.style.display = "flex";
+          mainContent.style.display = "none";
+        }
+      }
+
+      // Render menu makanan dan minuman
+      function renderMenu() {
+        // Food
+        foodGrid.innerHTML = "";
+        foodItems.forEach((item, idx) => {
+          const card = createMenuCard(item, idx, "food");
+          foodGrid.appendChild(card);
+        });
+        // Drink
+        drinkGrid.innerHTML = "";
+        drinkItems.forEach((item, idx) => {
+          const card = createMenuCard(item, idx, "drink");
+          drinkGrid.appendChild(card);
+        });
+      }
+
+      // Buat kartu menu
+      function createMenuCard(item, idx, type) {
+        const card = document.createElement("div");
+        card.className = "menu-card";
+
+        const img = document.createElement("img");
+        img.src = item.img;
+        img.alt = item.name;
+
+        const info = document.createElement("div");
+        info.className = "menu-info";
+
+        const name = document.createElement("h3");
+        name.textContent = item.name;
+
+        const desc = document.createElement("p");
+        desc.className = "desc";
+        desc.textContent = item.desc;
+
+        const price = document.createElement("p");
+        price.className = "price";
+        price.textContent = `Rp${item.price.toLocaleString()}`;
+
+        const btn = document.createElement("button");
+        btn.textContent = "Tambah ke Keranjang";
+        btn.onclick = () => {
+          addToCart(type, idx);
+        };
+
+        info.appendChild(name);
+        info.appendChild(desc);
+        info.appendChild(price);
+        info.appendChild(btn);
+
+        card.appendChild(img);
+        card.appendChild(info);
+
+        return card;
+      }
+
+      // Tambah ke keranjang
+      function addToCart(type, idx) {
+        let item;
+        if (type === "food") {
+          item = foodItems[idx];
+        } else {
+          item = drinkItems[idx];
+        }
+
+        // Cek apakah sudah ada di keranjang
+        const foundIndex = cart.findIndex((c) => c.name === item.name);
+        if (foundIndex >= 0) {
+          cart[foundIndex].qty++;
+        } else {
+          cart.push({ name: item.name, price: item.price, qty: 1 });
+        }
+        updateCartUI();
+        alert(`"${item.name}" berhasil ditambahkan ke keranjang.`);
+      }
+
+      // Update UI keranjang
+      function updateCartUI() {
+        cartCount.textContent = cart.reduce((sum, item) => sum + item.qty, 0);
+        if (cart.length === 0) {
+          cartList.innerHTML = "<li>Keranjang kosong.</li>";
+          cartTotal.textContent = "Total: Rp0";
+        } else {
+          cartList.innerHTML = "";
+          cart.forEach((item, idx) => {
+            const li = document.createElement("li");
+            li.textContent = `${item.name} x${item.qty} - Rp${(
+              item.price * item.qty
+            ).toLocaleString()}`;
+            const delBtn = document.createElement("button");
+            delBtn.textContent = "Hapus";
+            delBtn.onclick = () => {
+              removeFromCart(idx);
+            };
+            li.appendChild(delBtn);
+            cartList.appendChild(li);
+          });
+          cartTotal.textContent = `Total: Rp${getCartTotal().toLocaleString()}`;
+        }
+      }
+
+      // Hapus dari keranjang
+      function removeFromCart(idx) {
+        cart.splice(idx, 1);
+        updateCartUI();
+      }
+
+      // Hitung total keranjang
+      function getCartTotal() {
+        return cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+      }
+
+      // Switch section tampil
+      function showSection(section) {
+        if (section === "food") {
+          foodCategory.style.display = "block";
+          drinkCategory.style.display = "none";
+          cartSection.style.display = "none";
+          tabFood.classList.add("active");
+          tabDrink.classList.remove("active");
+          tabCart.classList.remove("active");
+          invoice.style.display = "none";
+        } else if (section === "drink") {
+          foodCategory.style.display = "none";
+          drinkCategory.style.display = "block";
+          cartSection.style.display = "none";
+          tabFood.classList.remove("active");
+          tabDrink.classList.add("active");
+          tabCart.classList.remove("active");
+          invoice.style.display = "none";
+        } else if (section === "cart") {
+          foodCategory.style.display = "none";
+          drinkCategory.style.display = "none";
+          cartSection.style.display = "block";
+          tabFood.classList.remove("active");
+          tabDrink.classList.remove("active");
+          tabCart.classList.add("active");
+          invoice.style.display = "none";
+        }
+      }
+
+      // Cetak invoice
+      function generateInvoice() {
+        if (cart.length === 0) {
+          alert("Keranjang kosong, tidak bisa checkout.");
+          return;
+        }
+        if (!paymentMethod.value) {
+          alert("Pilih metode pembayaran terlebih dahulu.");
+          return;
+        }
+        let invoiceText = "===== INVOICE PESANAN =====\n";
+        invoiceText += `Tanggal: ${new Date().toLocaleString()}\n`;
+        invoiceText += "---------------------------\n";
+        cart.forEach((item) => {
+          invoiceText += `${item.name} x${item.qty} = Rp${(
+            item.price * item.qty
+          ).toLocaleString()}\n`;
+        });
+        invoiceText += "---------------------------\n";
+        invoiceText += `Total Pembayaran: Rp${getCartTotal().toLocaleString()}\n`;
+        invoiceText += `Metode Pembayaran: ${
+          paymentMethod.options[paymentMethod.selectedIndex].text
+        }\n`;
+        invoiceText += "Terima kasih atas pesanan Anda!\n";
+        invoiceText += "===========================\n";
+
+        invoice.textContent = invoiceText;
+        invoice.style.display = "block";
+
+        // Reset keranjang setelah checkout
+        cart = [];
+        updateCartUI();
+      }
+
+      // Event listeners
+      loginForm.onsubmit = (e) => {
+        e.preventDefault();
+        const username = usernameInput.value.trim();
+        const password = passwordInput.value.trim();
+        if (validUsers[username] && validUsers[username] === password) {
+          sessionStorage.setItem("loggedInUser", username);
+          checkLogin();
+          alert(`Selamat datang, ${username}!`);
+        } else {
+          alert("Username atau password salah.");
+        }
+      };
+
+      tabFood.onclick = () => showSection("food");
+      tabDrink.onclick = () => showSection("drink");
+      tabCart.onclick = () => showSection("cart");
+      logoutBtn.onclick = () => {
+        sessionStorage.removeItem("loggedInUser");
+        checkLogin();
+      };
+      checkoutBtn.onclick = generateInvoice;
+
+      // Inisialisasi cek login saat halaman dimuat
+      checkLogin();
+    </script>
+  </body>
+</html>

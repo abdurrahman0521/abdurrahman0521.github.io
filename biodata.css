@@ -1,0 +1,47 @@
+.a1 {
+    color: rgb(60, 74, 64);
+    text-align: center;
+    /* text-align: star center end; */
+    font-family: "Nosifer", sans-serif;
+    font-weight: 1000;
+    font-style: normal;
+} */
+
+tr,th,td {
+    padding-bottom:20px;
+    text-align: start;
+    color: rgb(33, 92, 72);
+    
+}
+
+.a2 {
+    display: flex;
+    justify-content: center;
+}
+table {
+    margin-right: 200px ;
+    font-family: "Limelight", sans-serif;
+    font-weight: 80px;
+    font-style: normal;   
+}
+.a3 {
+    display: flex;
+    justify-content: center;
+}
+
+.a3 a {
+    margin: 1rem;
+}
+.a4 {
+    
+    padding-bottom:10px;
+    text-align: start;
+    color: rgb(33, 92, 72);
+}
+/* /* .a4 {
+    margin-left: 24.5%;
+    font-family: "Limelight", sans-serif;
+    font-weight: 80px;
+    font-style: normal;
+} */
+

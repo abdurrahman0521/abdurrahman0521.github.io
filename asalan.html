@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portofolio Pribadi</title>
+    <style>
+      * {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", sans-serif;
+        background-color: #f9f9f9;
+        color: #333;
+      }
+      header {
+        background-color: #004080;
+        color: white;
+        padding: 40px 20px;
+        text-align: center;
+      }
+      header h1 {
+        margin: 0;
+        font-size: 2.5em;
+      }
+      header p {
+        font-size: 1.2em;
+        margin-top: 10px;
+      }
+      nav {
+        background-color: #00264d;
+        text-align: center;
+        padding: 10px;
+      }
+      nav a {
+        color: white;
+        margin: 0 15px;
+        text-decoration: none;
+        font-weight: bold;
+        /* border: 2px solid #fff; */
+        /* padding: 0 20px; */
+        /* margin: 0 20px; */
+      }
+      section {
+        padding: 30px 20px;
+        max-width: 800px;
+        margin: auto;
+      }
+      h2 {
+        color: #004080;
+        /* border-bottom: 2px solid #ccc; */
+        padding-bottom: 5px;
+        position: relative;
+      }
+
+      h2.active::before {
+        content: "";
+        height: 2px;
+        width: 100%;
+        position: absolute;
+        background-color: #ccc;
+        top: 35px;
+        transition: 1.5s ease-in-out;
+      }
+
+      h2.active:hover::before {
+        width: 0%;
+      }
+      .project {
+        background-color: white;
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin-top: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+      footer {
+        text-align: center;
+        padding: 20px;
+        background-color: #004080;
+        color: white;
+        margin-top: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>ABDURRAHMAN</h1>
+      <p>CURICULUM | VITAGE</p>
+    </header>
+
+    <nav>
+      <a href="#tentang" data-tp="tentang">Tentang</a>
+      <a href="#keahlian" data-tp="keahlian">Keahlian</a>
+      <a href="#proyek" data-tp="proyek">Proyek</a>
+      <a href="#kontak" data-tp="kontak">Kontak</a>
+    </nav>
+
+    <section id="tentang" >
+      <h2 data-lokasi="tentang">Tentang Saya</h2>
+      <p>
+        Saya Abdurrahman seorang Mahasiswa UIN Ar-raniry dan Mahasiswa
+        Universitas Ubudiah Indonesia. Memiliki Berbagai pengalaman baik dari
+        Prodi Komunikasi maupun Prodi IT. Saya juga pernah menjadi :
+      </p>
+    </section>
+
+    <section id="pengalaman" >
+      <h2 data-lokasi="pengalaman">pengalaman</h2>
+      <ul>
+        <li>
+          Kepemimpinan dan Manajemen Organisasi – Terbukti dari peran sebagai
+          ketua OSIS dan ketua kebersihan, serta pembimbing anggota organisasi
+          keagamaan.
+        </li>
+        <li>
+          Kemampuan Public Speaking – Dibuktikan dengan prestasi Juara 1 Lomba
+          Pidato Fakultas Tarbiyah UIN Ar-Raniry.
+        </li>
+        <li>
+          Keagamaan dan Dakwah – Aktif dalam Musabaqah Syahril Qur’an dan
+          organisasi kader dakwah (ISKADA).
+        </li>
+        <li>
+          Komunikasi Sosial & Kerelawanan – Berperan sebagai anggota Relawan
+          Rumah Zakat, menunjukkan kepedulian sosial yang tinggi.
+        </li>
+        <li>
+          Kedisiplinan dan Tanggung Jawab – Terlihat dari keterlibatan dalam
+          pengelolaan kebersihan dan struktur organisasi.
+        </li>
+      </ul>
+    </section>
+
+    <section id="proyek" >
+      <h2 data-lokasi="proyek">Proyek</h2>
+      <div class="project">
+        <h3>Website Portofolio</h3>
+        <p>Portofolio pribadi yang dibuat dengan HTML dan CSS.</p>
+      </div>
+      <div class="project">
+        <h3>Aplikasi To-Do List</h3>
+        <p>Aplikasi manajemen tugas menggunakan JavaScript dasar.</p>
+      </div>
+    </section>
+
+    <section id="kontak" >
+      <h2 data-lokasi="kontak">Kontak</h2>
+      <p>Email: Arman05121005@email.com</p>
+      <p>instagram: Abd_rrahhman</p>
+      <p>WhatsApp: 081396524538</p>
+    </section>
+
+    <footer>&copy; 2025 ABDURRAHMAN. Semua Hak Dilindungi.</footer>
+
+    <script>
+      const linkNav = document.querySelectorAll("nav a");
+      const sectionJudul = document.querySelectorAll("section h2");
+
+      linkNav.forEach((link) => {
+        link.addEventListener("click", () => {
+          sectionJudul.forEach((judul) => {
+              judul.classList.add("active");
+            })
+          });
+        });
+    </script>
+  </body>
+</html>
